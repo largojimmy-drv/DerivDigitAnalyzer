@@ -1,999 +1,387 @@
-```html
 <!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Deriv Digit Analyzer PRO — Proyecto Jimmy</title>
-
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#071018;
-  color:#eaf4ff;
-  font-family:Inter,system-ui,Arial,sans-serif
-}
-
-header{
-  padding:16px 18px;
-  border-bottom:1px solid #203445;
-  background:#0b1722;
-  position:sticky;
-  top:0;
-  z-index:5
-}
-
-h1{
-  font-size:20px;
-  margin:0 0 4px
-}
-
-.muted{
-  color:#91a7b8;
-  font-size:12px
-}
-
-.wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:12px
-}
-
-.panel{
-  background:#0d1a25;
-  border:1px solid #203445;
-  border-radius:14px;
-  padding:13px;
-  margin:10px 0
-}
-
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center
-}
-
-select,button{
-  background:#101f2c;
-  color:#eaf4ff;
-  border:1px solid #294052;
-  border-radius:9px;
-  padding:10px 12px
-}
-
-button{
-  cursor:pointer
-}
-
-.primary{
-  background:#143b62
-}
-
-.status{
-  margin-left:auto;
-  border:1px solid #294052;
-  border-radius:20px;
-  padding:8px 11px;
-  font-size:12px
-}
-
-.live{
-  color:#45d391
-}
-
-.dead{
-  color:#ff6678
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px
-}
-
-.metric{
-  background:#101f2c;
-  border:1px solid #203445;
-  border-radius:12px;
-  padding:11px
-}
-
-.label{
-  color:#91a7b8;
-  font-size:11px
-}
-
-.val{
-  font-size:21px;
-  font-weight:800;
-  margin-top:4px
-}
-
-.big{
-  font-size:44px;
-  color:#62adff
-}
-
-.digits{
-  display:grid;
-  grid-template-columns:repeat(10,1fr);
-  gap:6px
-}
-
-.d{
-  background:#101f2c;
-  border:1px solid #203445;
-  border-radius:10px;
-  padding:8px;
-  text-align:center
-}
-
-.d b{
-  font-size:18px
-}
-
-.bar{
-  height:7px;
-  background:#1a2c39;
-  border-radius:9px;
-  margin:5px 0
-}
-
-.fill{
-  height:100%;
-  background:#62adff;
-  border-radius:9px
-}
-
-table{
-  width:100%;
-  border-collapse:collapse
-}
-
-th,td{
-  padding:7px;
-  border-bottom:1px solid #203445;
-  text-align:center;
-  font-size:12px
-}
-
-th{
-  color:#91a7b8
-}
-
-.signal{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px
-}
-
-.signalbox{
-  background:#101f2c;
-  border:1px solid #203445;
-  border-radius:12px;
-  padding:14px
-}
-
-.score{
-  font-size:34px;
-  font-weight:900
-}
-
-.green{
-  color:#45d391
-}
-
-.yellow{
-  color:#ffd166
-}
-
-.red{
-  color:#ff6678
-}
-
-.log{
-  max-height:220px;
-  overflow:auto
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  padding:6px;
-  border-bottom:1px solid #182b39;
-  font-size:12px
-}
-
-.note{
-  font-size:12px;
-  line-height:1.5;
-  color:#91a7b8
-}
-
-@media(max-width:700px){
-  .grid{
-    grid-template-columns:repeat(2,1fr)
-  }
-
-  .digits{
-    grid-template-columns:repeat(5,1fr)
-  }
-
-  .signal{
-    grid-template-columns:1fr
-  }
-
-  .status{
-    margin-left:0;
-    width:100%
-  }
-}
+*{box-sizing:border-box}body{margin:0;background:#071018;color:#eaf4ff;font-family:Arial,sans-serif}
+header{padding:16px;border-bottom:1px solid #203445;background:#0b1722}
+h1{font-size:20px;margin:0 0 5px}.muted,.note{color:#91a7b8;font-size:12px}.wrap{max-width:1200px;margin:auto;padding:12px}
+.panel{background:#0d1a25;border:1px solid #203445;border-radius:14px;padding:13px;margin:10px 0}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,button{background:#101f2c;color:#eaf4ff;border:1px solid #294052;border-radius:9px;padding:10px 12px}
+button{cursor:pointer}.primary{background:#143b62}.status{margin-left:auto;border:1px solid #294052;border-radius:20px;padding:8px 11px;font-size:12px}.live{color:#45d391}.dead{color:#ff6678}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.metric{background:#101f2c;border:1px solid #203445;border-radius:12px;padding:11px}.label{color:#91a7b8;font-size:11px}.val{font-size:21px;font-weight:800;margin-top:4px}.big{font-size:44px;color:#62adff}
+.digits{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}.d{background:#101f2c;border:1px solid #203445;border-radius:10px;padding:8px;text-align:center}.d b{font-size:18px}
+.bar{height:7px;background:#1a2c39;border-radius:9px;margin:5px 0}.fill{height:100%;background:#62adff;border-radius:9px}
+table{width:100%;border-collapse:collapse}th,td{padding:7px;border-bottom:1px solid #203445;text-align:center;font-size:12px}th{color:#91a7b8}
+.signal{display:grid;grid-template-columns:1fr 1fr;gap:10px}.signalbox{background:#101f2c;border:1px solid #203445;border-radius:12px;padding:14px}.score{font-size:34px;font-weight:900}.green{color:#45d391}.yellow{color:#ffd166}.red{color:#ff6678}
+.log{max-height:220px;overflow:auto}.row{display:flex;justify-content:space-between;padding:6px;border-bottom:1px solid #182b39;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.digits{grid-template-columns:repeat(5,1fr)}.signal{grid-template-columns:1fr}.status{margin-left:0;width:100%}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🔎 Deriv Digit Analyzer PRO</h1>
-  <div class="muted">
-    Laboratorio de análisis · datos en tiempo real · sin ejecución automática
-  </div>
+<h1>🔎 Deriv Digit Analyzer PRO</h1>
+<div class="muted">Laboratorio de análisis · datos en tiempo real · sin ejecución automática</div>
 </header>
 
 <div class="wrap">
 
 <div class="panel">
-
 <div class="controls">
-
 <select id="market">
-  <option value="1HZ25V">Volatility 25 (1s)</option>
-  <option value="1HZ50V">Volatility 50 (1s)</option>
-  <option value="1HZ100V">Volatility 100 (1s)</option>
+<option value="1HZ25V">Volatility 25 (1s)</option>
+<option value="1HZ50V">Volatility 50 (1s)</option>
+<option value="1HZ100V">Volatility 100 (1s)</option>
 </select>
-
 <select id="win">
-  <option>25</option>
-  <option>50</option>
-  <option selected>100</option>
-  <option>500</option>
-  <option>1000</option>
+<option>25</option><option>50</option><option selected>100</option><option>500</option><option>1000</option>
 </select>
-
-<button class="primary" id="connect">
-  ▶ Iniciar análisis
-</button>
-
-<button id="new">
-  ↻ Nuevo análisis
-</button>
-
-<button id="stop">
-  ■ Detener
-</button>
-
-<div id="status" class="status dead">
-  ● Desconectado
+<button class="primary" id="connect">▶ Iniciar análisis</button>
+<button id="new">↻ Nuevo análisis</button>
+<button id="stop">■ Detener</button>
+<div id="status" class="status dead">● Desconectado</div>
 </div>
-
-</div>
-
-<p class="note">
-El análisis se recalcula en vivo. “Nuevo análisis” crea una ventana limpia
-desde ese momento. No es una garantía de predicción y esta versión no
-envía operaciones a Deriv.
-</p>
-
+<p class="note">Datos públicos de mercado. Esta aplicación no ejecuta operaciones automáticamente.</p>
 </div>
 
 <div class="grid">
-
-<div class="metric">
-  <div class="label">Mercado</div>
-  <div class="val" id="marketName">—</div>
+<div class="metric"><div class="label">Mercado</div><div class="val" id="marketName">—</div></div>
+<div class="metric"><div class="label">Ticks</div><div class="val" id="n">0</div></div>
+<div class="metric"><div class="label">Último precio</div><div class="val" id="price">—</div></div>
+<div class="metric"><div class="label">Último dígito</div><div class="val big" id="last">—</div></div>
 </div>
 
-<div class="metric">
-  <div class="label">Ticks de la ventana</div>
-  <div class="val" id="n">0</div>
-</div>
-
-<div class="metric">
-  <div class="label">Último precio</div>
-  <div class="val" id="price">—</div>
-</div>
-
-<div class="metric">
-  <div class="label">Último dígito</div>
-  <div class="val big" id="last">—</div>
-</div>
-
-</div>
+<div class="panel"><h3>📊 Distribución 0–9</h3><div id="digits" class="digits"></div></div>
 
 <div class="panel">
-
-<h3>📊 Distribución 0–9</h3>
-
-<div id="digits" class="digits"></div>
-
-</div>
-
-<div class="panel">
-
 <h3>⏱ Gaps, frecuencia y racha</h3>
-
 <table>
-
-<thead>
-<tr>
-<th>Dígito</th>
-<th>Ticks</th>
-<th>%</th>
-<th>Gap actual</th>
-<th>Máx. gap</th>
-</tr>
-</thead>
-
+<thead><tr><th>Dígito</th><th>Ticks</th><th>%</th><th>Gap actual</th><th>Máx. gap</th></tr></thead>
 <tbody id="stats"></tbody>
-
 </table>
-
 </div>
 
 <div class="grid">
-
-<div class="metric">
-  <div class="label">Hot</div>
-  <div class="val" id="hot">—</div>
-</div>
-
-<div class="metric">
-  <div class="label">Cold</div>
-  <div class="val" id="cold">—</div>
-</div>
-
-<div class="metric">
-  <div class="label">Racha actual</div>
-  <div class="val" id="streak">—</div>
-</div>
-
-<div class="metric">
-  <div class="label">Último tick</div>
-  <div class="val" id="clock">—</div>
-</div>
-
+<div class="metric"><div class="label">Hot</div><div class="val" id="hot">—</div></div>
+<div class="metric"><div class="label">Cold</div><div class="val" id="cold">—</div></div>
+<div class="metric"><div class="label">Racha actual</div><div class="val" id="streak">—</div></div>
+<div class="metric"><div class="label">Último tick</div><div class="val" id="clock">—</div></div>
 </div>
 
 <div class="panel">
-
 <h3>🎯 Motor experimental</h3>
-
 <div class="signal">
-
 <div class="signalbox">
-
-<div class="label">
-Candidato estadístico
+<div class="label">Candidato estadístico</div>
+<div class="big" id="candidate">—</div>
+<div class="note" id="reason">Esperando suficientes ticks…</div>
 </div>
-
-<div class="big" id="candidate">
-—
-</div>
-
-<div class="note" id="reason">
-Esperando suficientes ticks…
-</div>
-
-</div>
-
 <div class="signalbox">
-
-<div class="label">
-Score experimental
+<div class="label">Score experimental</div>
+<div class="score" id="score">—</div>
+<div id="decision" class="yellow">ESPERAR</div>
+<div class="note">Métrica experimental, no probabilidad de ganar.</div>
 </div>
-
-<div class="score" id="score">
-—
 </div>
-
-<div id="decision" class="yellow">
-ESPERAR
-</div>
-
-<div class="note">
-El score es una métrica interna, NO una probabilidad de ganar.
-No se usa para operar automáticamente.
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 <div class="panel">
-
 <h3>🧾 Ticks recientes</h3>
-
 <div id="log" class="log"></div>
-
 </div>
 
 <div class="panel">
-
-<button id="csv">
-⬇ Exportar CSV
-</button>
-
-<button id="clear">
-🗑 Limpiar sesión
-</button>
-
-<p class="note">
-El CSV sirve para nuestro siguiente módulo: backtesting.
-Ahí compararemos señales contra resultados reales y calcularemos
-win rate, rachas, drawdown y valor esperado.
-</p>
-
+<button id="csv">⬇ Exportar CSV</button>
+<button id="clear">🗑 Limpiar sesión</button>
+<p class="note">Los datos podrán utilizarse después para nuestro módulo de backtesting.</p>
 </div>
 
 </div>
 
 <script>
-
 const WS='wss://ws.binaryws.com/websockets/v3';
-
 const names={
-  '1HZ25V':'Volatility 25 (1s)',
-  '1HZ50V':'Volatility 50 (1s)',
-  '1HZ100V':'Volatility 100 (1s)'
+'1HZ25V':'Volatility 25 (1s)',
+'1HZ50V':'Volatility 50 (1s)',
+'1HZ100V':'Volatility 100 (1s)'
 };
 
-let socket=null;
-let live=[];
-let all=[];
-let market='1HZ25V';
-let req=1;
+let socket=null,live=[],all=[],market='1HZ25V',req=1,retries=0,reconnectTimer=null;
 
 const $=x=>document.getElementById(x);
 
 function setStatus(ok,t){
-  $('status').textContent='● '+t;
-  $('status').className='status '+(ok?'live':'dead');
+$('status').textContent='● '+t;
+$('status').className='status '+(ok?'live':'dead');
 }
 
 function digit(q){
-
-  const s=String(q);
-  const a=s.split('.');
-
-  return Number(
-    (a[1]||a[0]).slice(-1)
-  );
-
+let s=String(q),p=s.indexOf('.');
+return Number((p>=0?s.slice(p+1):s).slice(-1));
 }
 
-function gap(arr,d){
-
-  let g=0;
-
-  for(let i=arr.length-1;i>=0;i--){
-
-    if(arr[i].digit===d)
-      break;
-
-    g++;
-  }
-
-  return arr.length?g:'—';
+function gap(a,d){
+let g=0;
+for(let i=a.length-1;i>=0;i--){
+if(a[i].digit===d)break;
+g++;
+}
+return a.length?g:'—';
 }
 
-function maxGap(arr,d){
-
-  let g=0;
-  let m=0;
-
-  for(const x of arr){
-
-    if(x.digit===d){
-
-      g=0;
-
-    }else{
-
-      g++;
-      m=Math.max(m,g);
-
-    }
-
-  }
-
-  return m;
+function maxGap(a,d){
+let g=0,m=0;
+for(const x of a){
+if(x.digit===d)g=0;
+else{g++;m=Math.max(m,g)}
+}
+return m;
 }
 
 function render(){
+let size=+$('win').value;
+let a=live.slice(-size);
+let f=Array(10).fill(0);
+a.forEach(x=>f[x.digit]++);
 
-  const size=+$('win').value;
+$('marketName').textContent=names[market];
+$('n').textContent=a.length;
 
-  const a=live.slice(-size);
+if(a.length){
+$('price').textContent=a.at(-1).quote;
+$('last').textContent=a.at(-1).digit;
+$('clock').textContent=new Date(a.at(-1).epoch*1000).toLocaleTimeString();
+}
 
-  const f=Array(10).fill(0);
+let hot=f.indexOf(Math.max(...f));
+let cold=f.indexOf(Math.min(...f));
 
-  a.forEach(x=>f[x.digit]++);
+$('hot').textContent=a.length?`${hot} · ${(f[hot]/a.length*100).toFixed(1)}%`:'—';
+$('cold').textContent=a.length?`${cold} · ${(f[cold]/a.length*100).toFixed(1)}%`:'—';
 
-  $('marketName').textContent=names[market];
+let st=0;
+if(a.length){
+let d=a.at(-1).digit;
+for(let i=a.length-1;i>=0&&a[i].digit===d;i--)st++;
+}
+$('streak').textContent=a.length?`${a.at(-1).digit} × ${st}`:'—';
 
-  $('n').textContent=a.length;
+$('digits').innerHTML=f.map((v,d)=>`
+<div class="d">
+<b>${d}</b>
+<div class="muted">${a.length?(v/a.length*100).toFixed(1):'0.0'}%</div>
+<div class="bar"><div class="fill" style="width:${a.length?v/a.length*100:0}%"></div></div>
+<div class="muted">${v}</div>
+</div>`).join('');
 
-  if(a.length){
+$('stats').innerHTML=Array.from({length:10},(_,d)=>`
+<tr>
+<td><b>${d}</b></td>
+<td>${f[d]}</td>
+<td>${a.length?(f[d]/a.length*100).toFixed(1):'0.0'}%</td>
+<td>${gap(a,d)}</td>
+<td>${maxGap(a,d)}</td>
+</tr>`).join('');
 
-    $('price').textContent=a.at(-1).quote;
+$('log').innerHTML=a.slice(-40).reverse().map(x=>`
+<div class="row">
+<span>${new Date(x.epoch*1000).toLocaleTimeString()}</span>
+<b>${x.quote}</b>
+<span>${x.digit}</span>
+</div>`).join('');
 
-    $('last').textContent=a.at(-1).digit;
+if(a.length>=25){
+let scores=Array(10).fill(0);
 
-    $('clock').textContent=
-      new Date(
-        a.at(-1).epoch*1000
-      ).toLocaleTimeString();
+for(let d=0;d<10;d++){
+let freq=f[d]/a.length;
+let g=Math.min(gap(a,d),a.length)/a.length;
+scores[d]=freq*70+g*30;
+}
 
-  }
+let c=scores.indexOf(Math.max(...scores));
+let sc=Math.round(scores[c]);
 
-  let hot=f.indexOf(Math.max(...f));
+$('candidate').textContent=c;
+$('score').textContent=sc+'/100';
+$('reason').textContent=`Frecuencia ${(f[c]/a.length*100).toFixed(1)}% · gap ${gap(a,c)} ticks`;
 
-  let cold=f.indexOf(Math.min(...f));
+$('decision').textContent=
+sc>=65?'CANDIDATO · VALIDAR':
+sc>=50?'ESPERAR':'NO OPERAR';
 
-  $('hot').textContent=
-    a.length
-    ? `${hot} · ${(f[hot]/a.length*100).toFixed(1)}%`
-    : '—';
-
-  $('cold').textContent=
-    a.length
-    ? `${cold} · ${(f[cold]/a.length*100).toFixed(1)}%`
-    : '—';
-
-  let st=0;
-
-  if(a.length){
-
-    const d=a.at(-1).digit;
-
-    for(
-      let i=a.length-1;
-      i>=0 && a[i].digit===d;
-      i--
-    ){
-      st++;
-    }
-
-  }
-
-  $('streak').textContent=
-    a.length
-    ? `${a.at(-1).digit} × ${st}`
-    : '—';
-
-  $('digits').innerHTML=
-    f.map((v,d)=>`
-
-      <div class="d">
-
-        <b>${d}</b>
-
-        <div class="muted">
-          ${a.length
-            ? (v/a.length*100).toFixed(1)
-            : '0.0'}%
-        </div>
-
-        <div class="bar">
-
-          <div
-            class="fill"
-            style="width:${a.length
-              ? v/a.length*100
-              : 0}%"
-          ></div>
-
-        </div>
-
-        <div class="muted">
-          ${v}
-        </div>
-
-      </div>
-
-    `).join('');
-
-  $('stats').innerHTML=
-    Array.from(
-      {length:10},
-      (_,d)=>`
-
-        <tr>
-
-          <td><b>${d}</b></td>
-
-          <td>${f[d]}</td>
-
-          <td>
-            ${a.length
-              ? (f[d]/a.length*100).toFixed(1)
-              : '0.0'}%
-          </td>
-
-          <td>${gap(a,d)}</td>
-
-          <td>${maxGap(a,d)}</td>
-
-        </tr>
-
-      `
-    ).join('');
-
-  $('log').innerHTML=
-    a.slice(-40)
-    .reverse()
-    .map(x=>`
-
-      <div class="row">
-
-        <span>
-          ${new Date(
-            x.epoch*1000
-          ).toLocaleTimeString()}
-        </span>
-
-        <b>${x.quote}</b>
-
-        <span>${x.digit}</span>
-
-      </div>
-
-    `)
-    .join('');
-
-  if(a.length>=25){
-
-    let scores=Array(10).fill(0);
-
-    for(let d=0;d<10;d++){
-
-      const freq=f[d]/a.length;
-
-      const g=
-        Math.min(
-          gap(a,d),
-          a.length
-        )/a.length;
-
-      scores[d]=freq*70+g*30;
-
-    }
-
-    const c=
-      scores.indexOf(
-        Math.max(...scores)
-      );
-
-    const sc=
-      Math.round(scores[c]);
-
-    $('candidate').textContent=c;
-
-    $('score').textContent=
-      sc+'/100';
-
-    $('reason').textContent=
-      `Frecuencia ${(f[c]/a.length*100).toFixed(1)}% · gap ${gap(a,c)} ticks · fórmula experimental`;
-
-    $('decision').textContent=
-      sc>=65
-      ? 'CANDIDATO · VALIDAR'
-      : sc>=50
-      ? 'ESPERAR'
-      : 'NO OPERAR';
-
-    $('decision').className=
-      sc>=65
-      ? 'green'
-      : sc>=50
-      ? 'yellow'
-      : 'red';
-
-  }
-
+$('decision').className=
+sc>=65?'green':
+sc>=50?'yellow':'red';
+}
 }
 
 function stop(){
-
-  if(socket){
-
-    try{
-      socket.close();
-    }catch(e){}
-
-    socket=null;
-
-  }
-
-  setStatus(false,'Desconectado');
-
+if(reconnectTimer){
+clearTimeout(reconnectTimer);
+reconnectTimer=null;
+}
+if(socket){
+try{socket.close()}catch(e){}
+socket=null;
+}
+setStatus(false,'Desconectado');
 }
 
 function connect(){
-
-  stop();
-
-  live=[];
-
-  market=$('market').value;
-
-  render();
-
-  setStatus(false,'Conectando…');
-
-  try{
-
-    socket=new WebSocket(WS);
-
-  }catch(err){
-
-    setStatus(
-      false,
-      'No se pudo abrir WebSocket'
-    );
-
-    console.error(err);
-
-    return;
-
-  }
-
-  socket.onopen=()=>{
-
-    setStatus(
-      true,
-      'Conectado · esperando ticks'
-    );
-
-    const request={
-
-      ticks:market,
-
-      subscribe:1,
-
-      req_id:req++
-
-    };
-
-    socket.send(
-      JSON.stringify(request)
-    );
-
-  };
-
-  socket.onmessage=e=>{
-
-    try{
-
-      const x=JSON.parse(e.data);
-
-      console.log(
-        'Respuesta Deriv:',
-        x
-      );
-
-      if(x.error){
-
-        setStatus(
-          false,
-          'Error: '+x.error.message
-        );
-
-        console.error(
-          'Deriv API error:',
-          x.error
-        );
-
-        return;
-
-      }
-
-      if(
-        x.msg_type==='tick' &&
-        x.tick
-      ){
-
-        const q=x.tick.quote;
-
-        const item={
-
-          quote:q,
-
-          epoch:x.tick.epoch,
-
-          digit:digit(q)
-
-        };
-
-        live.push(item);
-
-        all.push({
-          ...item,
-          market
-        });
-
-        if(live.length>1000){
-
-          live.shift();
-
-        }
-
-        setStatus(
-          true,
-          'LIVE · Ticks recibidos'
-        );
-
-        render();
-
-      }
-
-    }catch(err){
-
-      setStatus(
-        false,
-        'Error procesando datos'
-      );
-
-      console.error(
-        'Error:',
-        err
-      );
-
-    }
-
-  };
-
-  socket.onerror=()=>{
-
-    setStatus(
-      false,
-      'Error WebSocket'
-    );
-
-    console.error(
-      'WebSocket error'
-    );
-
-  };
-
-  socket.onclose=event=>{
-
-    socket=null;
-
-    if(event.code===1000){
-
-      setStatus(
-        false,
-        'Desconectado'
-      );
-
-    }else{
-
-      setStatus(
-        false,
-        'Desconectado · código '+event.code
-      );
-
-      console.warn(
-        'WebSocket cerrado:',
-        event.code,
-        event.reason
-      );
-
-    }
-
-  };
-
+if(reconnectTimer){
+clearTimeout(reconnectTimer);
+reconnectTimer=null;
 }
 
-$('connect').onclick=connect;
+if(socket){
+try{socket.close()}catch(e){}
+socket=null;
+}
 
-$('stop').onclick=stop;
+live=[];
+market=$('market').value;
+render();
+setStatus(false,'Conectando…');
 
-$('market').onchange=connect;
+try{
+socket=new WebSocket(WS);
+}catch(e){
+setStatus(false,'No se pudo abrir WebSocket');
+return;
+}
+
+socket.onopen=()=>{
+retries=0;
+setStatus(true,'Conectado · esperando ticks');
+
+socket.send(JSON.stringify({
+ticks:market,
+subscribe:1,
+req_id:req++
+}));
+};
+
+socket.onmessage=e=>{
+try{
+const x=JSON.parse(e.data);
+console.log('Respuesta Deriv:',x);
+
+if(x.error){
+setStatus(false,'Error: '+x.error.message);
+console.error(x.error);
+return;
+}
+
+if(x.msg_type==='tick'&&x.tick){
+const q=x.tick.quote;
+const item={
+quote:q,
+epoch:x.tick.epoch,
+digit:digit(q)
+};
+
+live.push(item);
+all.push({...item,market});
+
+if(live.length>1000)live.shift();
+
+setStatus(true,'LIVE · Ticks recibidos');
+render();
+}
+}catch(err){
+console.error(err);
+setStatus(false,'Error procesando datos');
+}
+};
+
+socket.onerror=()=>{
+setStatus(false,'Error WebSocket');
+console.error('WebSocket error');
+};
+
+socket.onclose=e=>{
+socket=null;
+
+if(e.code===1000){
+setStatus(false,'Desconectado');
+return;
+}
+
+setStatus(false,'Desconectado · código '+e.code);
+
+if(retries<5){
+retries++;
+setStatus(false,'Reintentando '+retries+'/5…');
+
+reconnectTimer=setTimeout(()=>{
+connect();
+},3000);
+}
+};
+}
+
+$('connect').onclick=()=>{
+retries=0;
+connect();
+};
+
+$('stop').onclick=()=>{
+retries=99;
+stop();
+};
+
+$('market').onchange=()=>{
+retries=0;
+connect();
+};
 
 $('win').onchange=render;
 
 $('new').onclick=()=>{
-
-  live=[];
-
-  render();
-
+live=[];
+render();
 };
 
 $('clear').onclick=()=>{
-
-  all=[];
-
-  live=[];
-
-  render();
-
+all=[];
+live=[];
+render();
 };
 
 $('csv').onclick=()=>{
+if(!all.length){
+alert('Todavía no hay datos.');
+return;
+}
 
-  if(!all.length){
+let rows=[
+['market','epoch','iso_time','quote','digit'],
+...all.map(x=>[
+x.market,
+x.epoch,
+new Date(x.epoch*1000).toISOString(),
+x.quote,
+x.digit
+])
+];
 
-    alert(
-      'Todavía no hay datos.'
-    );
+let csv=rows.map(r=>r.join(',')).join('\n');
+let a=document.createElement('a');
 
-    return;
+a.href=URL.createObjectURL(
+new Blob([csv],{type:'text/csv'})
+);
 
-  }
-
-  const rows=[
-
-    [
-      'market',
-      'epoch',
-      'iso_time',
-      'quote',
-      'digit'
-    ],
-
-    ...all.map(x=>[
-
-      x.market,
-
-      x.epoch,
-
-      new Date(
-        x.epoch*1000
-      ).toISOString(),
-
-      x.quote,
-
-      x.digit
-
-    ])
-
-  ];
-
-  const csv=
-    rows
-    .map(r=>r.join(','))
-    .join('\n');
-
-  const a=
-    document.createElement('a');
-
-  a.href=
-    URL.createObjectURL(
-      new Blob(
-        [csv],
-        {type:'text/csv'}
-      )
-    );
-
-  a.download=
-    'deriv_analyzer_ticks.csv';
-
-  a.click();
-
+a.download='deriv_analyzer_ticks.csv';
+a.click();
 };
 
 render();
-
 </script>
-
 </body>
 </html>
-```
